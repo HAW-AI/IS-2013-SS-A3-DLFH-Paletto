@@ -7,10 +7,11 @@ public class Board {
 	
 	
 	public Board(List<List<Token>> tokens){
-		//TODO
+		this.tokens = tokens;
 	}
-	
-	public boolean removeStone(Token token){
-		//TODO
+
+	public List<List<Token>> removeStone(int xPos, int yPos) {
+		tokens.get(xPos).get(yPos).setUnavailable();
+		return tokens;
 	}
 }
