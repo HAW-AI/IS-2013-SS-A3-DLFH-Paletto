@@ -3,12 +3,15 @@ package com.haw.paletto;
 import java.awt.*;
 
 public class Token {
+	private boolean available = false;
 	private Color color;
 	private int xPos;
 	private int yPos;
 	
-	public Token(Color color){
+	public Token(Color color, int xPos, int yPos){
 		this.color = color;
+		this.xPos = xPos;
+		this.yPos = yPos;
 	}
 	
 	public Color getColor(){
@@ -23,7 +26,16 @@ public class Token {
 		return this.yPos;
 	}
 	
-	public boolean equals(Object obj){
-		//TODO
+	public boolean isAvailable(){
+		return this.available==true;
+	}
+
+	public boolean isMovable() {
+		boolean result = false;
+		if(this.isAvailable()){
+			//TODO
+			result = true;
+		}
+		return result;
 	}
 }
