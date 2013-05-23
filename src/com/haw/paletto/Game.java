@@ -1,6 +1,4 @@
 package com.haw.paletto;
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.haw.paletto.gui.GameGui;
@@ -12,19 +10,22 @@ public class Game {
 	private Board board;
 	private GameGui gui;
 	private AI ai;
+	private static final int rowColumnSize = 3;
 	
 	public static void main(String[] args) {
-        GameGui gui = new GameGui(3);
+        GameGui gui = new GameGui(rowColumnSize);
         GameLogic logic = new GameLogic();
+        Board board = new Board(logic.buildBoard(rowColumnSize));
         AI ai = new AI();
-		Game paletto = new Game(logic, gui, ai);
+		Game paletto = new Game(logic, gui, ai, board);
 		paletto.start();
 	}
 	
-	public Game(GameLogic logic,GameGui gui, AI ai){
+	public Game(GameLogic logic,GameGui gui, AI ai, Board board){
 		this.logic = logic;
 		this.gui = gui;
 		this.ai = ai;
+		this.board = board;
 	}
 	
 	private void start() {
