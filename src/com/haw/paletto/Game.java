@@ -1,4 +1,5 @@
 package com.haw.paletto;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Game {
 	}
 	
 	private void start() {
-		gui.start();
+		gui.start(this);
 	}
 
 	public void newGame(){
@@ -38,8 +39,9 @@ public class Game {
 		// TODO
 	}
 	
-	public boolean takeStone(Token stones){
-		// TODO
+	public void takeStone(int xPos, int yPos){
+		List<List<Token>> tokens = board.removeStone(xPos,yPos);
+		gui.repaint(tokens);
 	}
 	
 	public List<Token> takeableStones(){
