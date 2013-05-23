@@ -66,7 +66,7 @@ public class GameGui {
 	public void repaint(List<List<Token>> tokens){
 		for(List<Token> row : tokens){
 			for(Token token : row){
-				fieldButtons[token.xPos()][token.yPos()].setState(token.getColor(),token.isMovable());
+				fieldButtons[token.xPos()][token.yPos()].setState(token.getColor(),token.isMoveable());
 			}
 		}
 		f.repaint();

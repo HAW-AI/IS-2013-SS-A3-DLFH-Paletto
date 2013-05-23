@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class Token {
 	private boolean available = false;
+	private boolean moveable = false;
 	private Color color;
 	private int xPos;
 	private int yPos;
@@ -30,12 +31,23 @@ public class Token {
 		return this.available==true;
 	}
 
-	public boolean isMovable() {
+	public boolean isMoveable() {
 		boolean result = false;
-		if(this.isAvailable()){
-			//TODO
+		if(this.isAvailable() && this.moveable==true){
 			result = true;
 		}
 		return result;
+	}
+	
+	public void setUnavailable(){
+		this.available=false;
+	}
+	
+	public void setMoveable(){
+		this.moveable=true;
+	}
+	
+	public void setUnmoveable(){
+		this.moveable=false;
 	}
 }
