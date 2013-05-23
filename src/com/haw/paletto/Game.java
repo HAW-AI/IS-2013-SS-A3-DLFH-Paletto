@@ -1,4 +1,5 @@
 package com.haw.paletto;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.haw.paletto.gui.GameGui;
@@ -12,7 +13,7 @@ public class Game {
 	private AI ai;
 	
 	public static void main(String[] args) {
-        GameGui gui = new GameGui();
+        GameGui gui = new GameGui(3);
         GameLogic logic = new GameLogic();
         AI ai = new AI();
 		Game paletto = new Game(logic, gui, ai);
@@ -26,7 +27,7 @@ public class Game {
 	}
 	
 	private void start() {
-		// TODO
+		gui.start();
 	}
 
 	public void newGame(){
