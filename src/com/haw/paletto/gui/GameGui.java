@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import java.util.List;
+
+import com.haw.paletto.Game;
 import com.haw.paletto.Token;
 
 public class GameGui {
@@ -16,7 +19,6 @@ public class GameGui {
 
 	public GameGui(int rowColumnSize) {
 		this.rowColumnSize = rowColumnSize;
-		
 		f = new JFrame(GameName);
 		
 		fieldButtons = new TokenButton[rowColumnSize][rowColumnSize];
@@ -35,18 +37,19 @@ public class GameGui {
 		}
 	}
 
-	public void start() {
+	public void start(Game game) {
 		f.setLayout(new BorderLayout());
 		
 		f.add(fieldPanel, BorderLayout.CENTER);
 		f.add(scorePanel, BorderLayout.EAST);
 		f.add(actionPanel, BorderLayout.SOUTH);
 		
-		ActionListener moveListener = new MoveActionListener(this);
+		ActionListener moveListener = new MoveActionListener(game);
 		fieldPanel.setLayout(new GridLayout(rowColumnSize,rowColumnSize));
 		for(int i=0; i < rowColumnSize; i++){
 			for(int j=0; j < rowColumnSize; j++){
 				fieldButtons[i][j].addActionListener(moveListener);
+				fieldButtons[i][j].setActionCommand(i+"-"+j);				
 				fieldPanel.add(fieldButtons[i][j]);
 			}
 		}
@@ -59,35 +62,13 @@ public class GameGui {
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
-	public boolean removeToken(Token token){
-		boolean result = false;
-		if(fieldButtons[token.xPos()][token.yPos()].isAvailable()){
-			fieldButtons[token.xPos()][token.yPos()].remove();
-			result = true;
+		
+	public void repaint(List<List<Token>> tokens){
+		for(List<Token> row : tokens){
+			for(Token token : row){
+				fieldButtons[token.xPos()][token.yPos()].setState(token.getColor(),token.isMovable());
+			}
 		}
-		return result;
-	}
-	
-	public boolean setMoveableToken(Token token){
-		boolean result = false;
-		if(fieldButtons[token.xPos()][token.yPos()].isAvailable()){
-			fieldButtons[token.xPos()][token.yPos()].setMoveable();
-			result = true;
-		}
-		return result;
-	}
-	
-	public boolean setUnmoveableToken(Token token){
-		boolean result = false;
-		if(fieldButtons[token.xPos()][token.yPos()].isAvailable()){
-			fieldButtons[token.xPos()][token.yPos()].setUnmoveable();
-			result = true;
-		}
-		return result;
-	}
-	
-	public void repaint(){
 		f.repaint();
 	}
 }
