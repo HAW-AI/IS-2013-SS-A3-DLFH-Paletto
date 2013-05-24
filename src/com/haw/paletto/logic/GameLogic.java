@@ -51,7 +51,6 @@ public class GameLogic {
 		while(!validOrder){
 			validOrder = true;
 			Collections.shuffle(colors);
-			System.out.println(colors.size());
 			for (int i = 0; (i < colors.size()); i++) {
 				Color currentElem = colors.get(i);
 				System.out.println(">>");
