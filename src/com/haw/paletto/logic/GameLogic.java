@@ -71,12 +71,60 @@ public class GameLogic {
 		}
 		return colors;
 	}
-	
+
 	public boolean gameWon(){
 		//TODO
 	}
 	
-	public List<Token> moveableTokens(){
-		//TODO
+	public List<Token> moveableTokens(List<List<Token>> tokens, int size){
+		List<Token> result = new ArrayList<Token>();
+		for(int i=0; i< size;i++){
+			for(int j=0; j < size;j++){
+				List<Boolean> moveableList = new ArrayList<Boolean>();
+				Token currentElem = tokens.get(i).get(j);
+				if((i==0 && j==0) || (i==0 && j==(size-1)) || (i==(size-1) && j==0) || (i==(size-1) && j==(size-1))){ //corners
+					result.add(currentElem);
+				} else if(i == 0){ //rest of first row
+					moveableList.add(tokens.get(i).get(j-1).isMoveable());
+					moveableList.add(tokens.get(i).get(j+1).isMoveable());
+					moveableList.add(tokens.get(i+1).get(j).isMoveable());
+					if(isTokenMoveable(moveableList)) result.add(currentElem);
+				} else if(i == (size-1)){ //rest of last row
+					moveableList.add(tokens.get(i).get(j-1).isMoveable());
+					moveableList.add(tokens.get(i).get(j+1).isMoveable());
+					moveableList.add(tokens.get(i-1).get(j).isMoveable());
+					if(isTokenMoveable(moveableList)) result.add(currentElem);
+				} else if(j == 0){ //first values of middle rows 
+					moveableList.add(tokens.get(i).get(j+1).isMoveable());
+					moveableList.add(tokens.get(i+1).get(j).isMoveable());
+					moveableList.add(tokens.get(i-1).get(j).isMoveable());
+					if(isTokenMoveable(moveableList)) result.add(currentElem);			
+				} else if(j == (size-1)){ //last values of middle rows 
+					moveableList.add(tokens.get(i).get(j-1).isMoveable());
+					moveableList.add(tokens.get(i+1).get(j).isMoveable());
+					moveableList.add(tokens.get(i-1).get(j).isMoveable());
+					if(isTokenMoveable(moveableList)) result.add(currentElem);					
+				} else { //rest of all rows between first and last
+					moveableList.add(tokens.get(i).get(j-1).isMoveable());
+					moveableList.add(tokens.get(i).get(j+1).isMoveable());
+					moveableList.add(tokens.get(i+1).get(j).isMoveable());
+					moveableList.add(tokens.get(i-1).get(j).isMoveable());
+					if(isTokenMoveable(moveableList)) result.add(currentElem);
+				}
+			}
+		}
+		return result;
+	}
+	
+	private boolean isTokenMoveable(List<Boolean> moveableList){
+		boolean result = false;
+		int count = 0;
+		for(int i=0; (i < moveableList.size()) && !result ;i++){
+			if(moveableList.get(i) == true){
+				count++;
+				if(count == 2) result = true;
+			}
+		}
+		return result;
 	}
 }

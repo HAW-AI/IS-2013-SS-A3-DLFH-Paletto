@@ -22,4 +22,10 @@ public class Board {
 		tokens.get(xPos).get(yPos).setUnavailable();
 		return tokens;
 	}
+	
+	public void setMoveable(List<Token> moveableTokens){
+		for(Token token : moveableTokens){
+			this.tokens.get(token.yPos()).get(token.xPos()).setMoveable();
+		}
+	}
 }

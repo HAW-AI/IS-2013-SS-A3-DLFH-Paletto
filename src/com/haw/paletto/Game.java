@@ -30,6 +30,8 @@ public class Game {
 	
 	private void start() {
 		gui.start(this);
+		List<Token> moveableTokens = logic.moveableTokens(board.tokens(), rowColumnSize);
+		board.setMoveable(moveableTokens);
 		gui.repaint(board.tokens());
 	}
 
