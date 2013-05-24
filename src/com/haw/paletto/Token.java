@@ -3,7 +3,7 @@ package com.haw.paletto;
 import java.awt.*;
 
 public class Token {
-	private boolean available = false;
+	private boolean available = true;
 	private boolean moveable = false;
 	private Color color;
 	private int xPos;
