@@ -2,6 +2,8 @@ package com.haw.paletto;
 
 import java.awt.*;
 
+import javax.swing.UIManager;
+
 public class Token {
 	private boolean available = true;
 	private boolean moveable = false;
@@ -41,6 +43,7 @@ public class Token {
 	
 	public void setUnavailable(){
 		this.available=false;
+		this.color=UIManager.getColor("Button.background");
 	}
 	
 	public void setMoveable(){
