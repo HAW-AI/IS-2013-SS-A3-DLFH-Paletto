@@ -17,8 +17,8 @@ public class Token {
 		this.yPos = yPos;
 	}
 	
-	public Color getColor(){
-		return color;
+	public Color color(){
+		return this.color;
 	}
 	
 	public int xPos(){
@@ -53,4 +53,5 @@ public class Token {
 	public void setUnmoveable(){
 		this.moveable=false;
 	}
+	
 }
