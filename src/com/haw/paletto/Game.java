@@ -33,7 +33,8 @@ public class Game {
 	}
 
 	public void newGame(){
-		// TODO
+		board.tokens(logic.buildBoard(rowColumnSize));
+		gui.repaint(board.tokens());
 	}
 	
 	public boolean playerWon(){

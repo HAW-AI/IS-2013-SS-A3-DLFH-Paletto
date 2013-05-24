@@ -9,6 +9,14 @@ public class Board {
 	public Board(List<List<Token>> tokens){
 		this.tokens = tokens;
 	}
+	
+	public List<List<Token>> tokens(){
+		return this.tokens;
+	}
+	
+	public void tokens(List<List<Token>> tokens){
+		this.tokens = tokens;
+	}
 
 	public List<List<Token>> removeStone(int xPos, int yPos) {
 		tokens.get(xPos).get(yPos).setUnavailable();

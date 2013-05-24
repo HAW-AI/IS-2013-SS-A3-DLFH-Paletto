@@ -56,6 +56,8 @@ public class GameGui {
 		
 		actionPanel.setLayout(new FlowLayout());
 		actionPanel.add(doneButton);
+		ActionListener newGameListener = new NewGameActionListener(game);
+		newGameButton.addActionListener(newGameListener);
 		actionPanel.add(newGameButton);
 		
 		f.setSize(280, 350);
