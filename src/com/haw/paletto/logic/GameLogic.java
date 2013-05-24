@@ -26,7 +26,7 @@ public class GameLogic {
 			for(int i=0; i< size;i++){
 				List<Token> newList = new ArrayList<Token>(); 
 				for(int j=0; j < size;j++){
-					newList.add(new Token(colors.get((size*i)+j),j,i));
+					newList.add(new Token(colors.get((size*i)+j),i,j));
 				}
 				result.add(newList);
 			}
@@ -71,7 +71,7 @@ public class GameLogic {
 		}
 		return colors;
 	}
-		
+	
 	public boolean gameWon(){
 		//TODO
 	}
