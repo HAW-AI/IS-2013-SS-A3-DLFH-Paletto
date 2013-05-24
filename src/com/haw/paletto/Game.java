@@ -30,6 +30,7 @@ public class Game {
 	
 	private void start() {
 		gui.start(this);
+		gui.repaint(board.tokens());
 	}
 
 	public void newGame(){
