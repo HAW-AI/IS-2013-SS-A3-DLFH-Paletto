@@ -54,4 +54,8 @@ public class Token {
 		this.moveable=false;
 	}
 	
+	public Token clone(){
+		return new Token(this.color, this.xPos, this.yPos);
+	}
+	
 }

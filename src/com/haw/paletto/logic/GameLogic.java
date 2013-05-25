@@ -7,18 +7,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import com.haw.paletto.Board;
+import com.haw.paletto.Game;
 import com.haw.paletto.Token;
 
 public class GameLogic {
 	
-	List<Color> colorList = Arrays.asList(red,blue,green,yellow,black,white,gray,orange,pink,magenta,lightGray,cyan,darkGray); 
+	static List<Color> colorList = Arrays.asList(red,blue,green,yellow,black,white,gray,orange,pink,magenta,lightGray,cyan,darkGray); 
 
-	public GameLogic(){
-		//TODO
-	}
-	
-	public List<List<Token>> buildBoard(int size){
+	public static List<List<Token>> buildBoard(int size){
 		List<List<Token>> result = new ArrayList<List<Token>>();
 		if(size <= colorList.size()){
 			List<Color> colors = getColors(size);
@@ -35,7 +34,7 @@ public class GameLogic {
 		return result;
 	}
 	
-	private List<Color> getColors(int quantity){
+	private static List<Color> getColors(int quantity){
 		List<Color> result = new ArrayList<Color>();
 		for(int i=0; i< quantity;i++){
 			for(int j=0; j < quantity;j++){
@@ -45,7 +44,7 @@ public class GameLogic {
 		return result;
 	}
 	
-	private List<Color> palettoShuffle(List<Color> colors, int size){
+	private static List<Color> palettoShuffle(List<Color> colors, int size){
 		boolean validOrder = false;
 		
 		while(!validOrder){
@@ -71,11 +70,11 @@ public class GameLogic {
 		return colors;
 	}
 
-	public boolean gameWon(){
-		//TODO
+	public static boolean gameWon(Game game){
+		return (Board.isEmpty(game.getBoard()) || game.getAiStones().containsValue(game.getSize()) || game.getPlayerStones().containsValue(game.getSize()));
 	}
 	
-	public List<Token> moveableTokens(List<List<Token>> tokens, int size){
+	public static List<Token> moveableTokens(List<List<Token>> tokens, int size){
 		List<Token> result = new ArrayList<Token>();
 		for(int i=0; i< size;i++){
 			for(int j=0; j < size;j++){
@@ -115,7 +114,7 @@ public class GameLogic {
 		return result;
 	}
 	
-	private boolean isTokenMoveable(List<Boolean> moveableList){
+	private static boolean isTokenMoveable(List<Boolean> moveableList){
 		boolean result = false;
 		int count = 0;
 		for(int i=0; (i < moveableList.size()) && !result ;i++){
@@ -125,5 +124,10 @@ public class GameLogic {
 			}
 		}
 		return result;
+	}
+	
+	public static boolean moveAllowed(List<Token> move){
+		//TODO
+		return true;
 	}
 }
