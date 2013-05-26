@@ -27,7 +27,7 @@ public class AI {
 		List<Token> result = null;
 		for(List<Token> move : possibleMoves(game.getBoard())){
 			Game newGame = doMove(Game.clone(game), move, aiOnTurn);
-			int eval = evalNextState(newGame,true,depth-1);
+			int eval = evalNextState(newGame,aiOnTurn,depth-1);
 			if(eval>val){ val=eval; result = move;}
 		}
 		return result;
@@ -49,7 +49,7 @@ public class AI {
 			if(Game.moveAllowed(move)){
 				Game newGame = doMove(game, move, ai);
 				int nextVal=minmax(newGame, !ai, searchDepth-1);
-				if( (ai && nextVal>=resultVal) || (!ai && nextVal<=resultVal)){
+				if( (!ai && nextVal>=resultVal) || (ai && nextVal<=resultVal)){
 					resultVal = nextVal;
 				}
 			}
@@ -64,6 +64,7 @@ public class AI {
 		if(ai){
 			for(Color color : game.getAiStones().keySet()){
 				result += game.getAiStones().get(color);
+				if(game.getAiStones().get(color) == game.getSize()) result = Integer.MAX_VALUE;
 			}
 		}else{
 			for(Color color : game.getPlayerStones().keySet()){
@@ -78,18 +79,22 @@ public class AI {
 		List<List<Token>> result = new LinkedList<List<Token>>();
 		Map<Color,List<Token>> takeableColors = new HashMap<Color,List<Token>>();
 		for(Token t : takeableStones){
-			if(!takeableColors.containsValue(t.color())){
-				List<Token> l = new LinkedList<Token>();
-				l.add(t);
-				takeableColors.put(t.color(),l);
-			}else{
-				takeableColors.get(t.color()).add(t);
+			if(t.isAvailable()){
+				if(!takeableColors.containsKey(t.color())){
+					List<Token> l = new LinkedList<Token>();
+					l.add(t);
+					takeableColors.put(t.color(),l);
+				}else{
+					takeableColors.get(t.color()).add(t);
+				}
 			}
 		}
 		for(Color c : takeableColors.keySet()){
 			//TODO teillisten
+			//System.out.println("PossibleMoves: "+takeableColors.get(c));
 			result.add(takeableColors.get(c));
 		}
+		//System.out.println("---------------------");
 		return result;
 	}
 }

@@ -53,12 +53,19 @@ public class Game {
 	}
 	
 	public static Game movePlayer(GameGui gui, Game game){
+		Game result = null;
 		System.out.println("Move Player");
-		Game result = moveAi(game);
-		System.out.println("Moved AI");
-		List<Token> moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
-		game.getBoard().setMoveable(moveableTokens);
-		gui.setGame(game);
+		if(GameLogic.gameWon(game)){
+			
+		}else{
+			List<Token> moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
+			game.getBoard().setMoveable(moveableTokens);
+			result = moveAi(game);
+			System.out.println("Moved AI");
+			moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
+			game.getBoard().setMoveable(moveableTokens);
+			gui.setGame(game);
+		}
 		return result;
 	}
 	
