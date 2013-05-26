@@ -77,7 +77,10 @@ public class Game {
 	
 	//TODO to players list
 	public static Game takeStone(Game game, int xPos, int yPos){
-		game.getBoard().removeStone(xPos,yPos);
+		Color currentTokenColor = game.getBoard().token(xPos, yPos).color();
+		List<List<Token>> tokens = game.getBoard().removeStone(xPos,yPos);
+		List<Token> moveableTokens = GameLogic.moveableTokens(tokens, game.getSize(), currentTokenColor);
+		game.getBoard().setMoveable(moveableTokens);
 		return game;
 	}
 	
