@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.haw.paletto.Board;
 import com.haw.paletto.Game;
@@ -25,7 +24,7 @@ public class GameLogic {
 			for(int i=0; i< size;i++){
 				List<Token> newList = new ArrayList<Token>(); 
 				for(int j=0; j < size;j++){
-					newList.add(new Token(colors.get((size*i)+j),i,j));
+					newList.add(new Token(colors.get((size*i)+j),j,i));
 				}
 				result.add(newList);
 			}
@@ -75,50 +74,70 @@ public class GameLogic {
 	}
 	
 	public static List<Token> moveableTokens(List<List<Token>> tokens, int size){
+		return moveableTokens(tokens, size, null);
+	}
+	
+	public static List<Token> moveableTokens(List<List<Token>> tokens, int size, Color color){
 		List<Token> result = new ArrayList<Token>();
 		for(int i=0; i< size;i++){
 			for(int j=0; j < size;j++){
 				List<Boolean> moveableList = new ArrayList<Boolean>();
 				Token currentElem = tokens.get(i).get(j);
-				if((i==0 && j==0) || (i==0 && j==(size-1)) || (i==(size-1) && j==0) || (i==(size-1) && j==(size-1))){ //corners
-					result.add(currentElem);
-				} else if(i == 0){ //rest of first row
-					moveableList.add(tokens.get(i).get(j-1).isMoveable());
-					moveableList.add(tokens.get(i).get(j+1).isMoveable());
-					moveableList.add(tokens.get(i+1).get(j).isMoveable());
-					if(isTokenMoveable(moveableList)) result.add(currentElem);
-				} else if(i == (size-1)){ //rest of last row
-					moveableList.add(tokens.get(i).get(j-1).isMoveable());
-					moveableList.add(tokens.get(i).get(j+1).isMoveable());
-					moveableList.add(tokens.get(i-1).get(j).isMoveable());
-					if(isTokenMoveable(moveableList)) result.add(currentElem);
-				} else if(j == 0){ //first values of middle rows 
-					moveableList.add(tokens.get(i).get(j+1).isMoveable());
-					moveableList.add(tokens.get(i+1).get(j).isMoveable());
-					moveableList.add(tokens.get(i-1).get(j).isMoveable());
-					if(isTokenMoveable(moveableList)) result.add(currentElem);			
-				} else if(j == (size-1)){ //last values of middle rows 
-					moveableList.add(tokens.get(i).get(j-1).isMoveable());
-					moveableList.add(tokens.get(i+1).get(j).isMoveable());
-					moveableList.add(tokens.get(i-1).get(j).isMoveable());
-					if(isTokenMoveable(moveableList)) result.add(currentElem);					
-				} else { //rest of all rows between first and last
-					moveableList.add(tokens.get(i).get(j-1).isMoveable());
-					moveableList.add(tokens.get(i).get(j+1).isMoveable());
-					moveableList.add(tokens.get(i+1).get(j).isMoveable());
-					moveableList.add(tokens.get(i-1).get(j).isMoveable());
-					if(isTokenMoveable(moveableList)) result.add(currentElem);
+				System.out.println(color+" =?= "+ currentElem.color());
+				if(color == null || color.equals(currentElem.color())){
+					System.out.println(">>>"+currentElem);
+					if((i==0 && j==0) || (i==0 && j==(size-1)) || (i==(size-1) && j==0) || (i==(size-1) && j==(size-1))){ //corners
+						result.add(currentElem);
+						System.out.println("corner");
+					} else if(i == 0){ //rest of first row
+						moveableList.add(false);
+						moveableList.add(tokens.get(i).get(j-1).isAvailable());
+						moveableList.add(tokens.get(i).get(j+1).isAvailable());
+						moveableList.add(tokens.get(i+1).get(j).isAvailable());
+						if(isTokenMoveable(moveableList)) result.add(currentElem);
+						System.out.println("rest of first row");
+					} else if(i == (size-1)){ //rest of last row
+						moveableList.add(false);
+						moveableList.add(tokens.get(i).get(j-1).isAvailable());
+						moveableList.add(tokens.get(i).get(j+1).isAvailable());
+						moveableList.add(tokens.get(i-1).get(j).isAvailable());
+						if(isTokenMoveable(moveableList)) result.add(currentElem);
+						System.out.println("rest of last row");
+					} else if(j == 0){ //first values of middle rows 
+						moveableList.add(false);
+						moveableList.add(tokens.get(i).get(j+1).isAvailable());
+						moveableList.add(tokens.get(i+1).get(j).isAvailable());
+						moveableList.add(tokens.get(i-1).get(j).isAvailable());
+						if(isTokenMoveable(moveableList)) result.add(currentElem);	
+						System.out.println("first values of middle rows ");
+					} else if(j == (size-1)){ //last values of middle rows 
+						moveableList.add(false);
+						moveableList.add(tokens.get(i).get(j-1).isAvailable());
+						moveableList.add(tokens.get(i+1).get(j).isAvailable());
+						moveableList.add(tokens.get(i-1).get(j).isAvailable());
+						if(isTokenMoveable(moveableList)) result.add(currentElem);	
+						System.out.println("last values of middle rows ");
+					} else { //rest of all rows between first and last
+						moveableList.add(tokens.get(i).get(j-1).isAvailable());
+						moveableList.add(tokens.get(i).get(j+1).isAvailable());
+						moveableList.add(tokens.get(i+1).get(j).isAvailable());
+						moveableList.add(tokens.get(i-1).get(j).isAvailable());
+						if(isTokenMoveable(moveableList)) result.add(currentElem);
+						System.out.println("rest of all rows between first and last");
+					}
 				}
 			}
 		}
+		System.out.println("Moveable: "+result);
+
 		return result;
 	}
 	
 	private static boolean isTokenMoveable(List<Boolean> moveableList){
 		boolean result = false;
 		int count = 0;
-		for(int i=0; (i < moveableList.size()) && !result ;i++){
-			if(moveableList.get(i) == true){
+		for(int i=0; (i < moveableList.size()) && !result; i++){
+			if(!moveableList.get(i)){
 				count++;
 				if(count == 2) result = true;
 			}
