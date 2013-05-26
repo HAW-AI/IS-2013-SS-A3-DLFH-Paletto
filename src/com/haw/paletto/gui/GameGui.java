@@ -94,11 +94,9 @@ public class GameGui {
 	public void repaint(Game game){
 		for(List<Token> row : game.getBoard().tokens()){
 			for(Token token : row){
-				System.out.println("~~~"+token+" >"+token.color());
 				fieldButtons[token.yPos()][token.xPos()].setState(token.color(),token.isMoveable());
 			}
 		}
-		System.out.println(fieldButtons);
 		f.repaint();
 	}
 }
