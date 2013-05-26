@@ -15,12 +15,16 @@ public class Board {
 		return this.tokens;
 	}
 	
+	public Token token(int xPos, int yPos){
+		return tokens.get(yPos).get(xPos);
+	}
+	
 	public void tokens(List<List<Token>> tokens){
 		this.tokens = tokens;
 	}
 
 	public List<List<Token>> removeStone(int xPos, int yPos) {
-		tokens.get(xPos).get(yPos).setUnavailable();
+		tokens.get(yPos).get(xPos).setUnavailable();
 		return tokens;
 	}
 	
@@ -31,8 +35,14 @@ public class Board {
 	}
 	
 	public void setMoveable(List<Token> moveableTokens){
-		for(Token token : moveableTokens){
-			this.tokens.get(token.yPos()).get(token.xPos()).setMoveable();
+		for(List<Token> row : tokens){
+			for(Token token : row){
+				token.setUnmoveable();
+			}
+		}
+		
+		for(Token moveableToken : moveableTokens){
+			tokens.get(moveableToken.yPos()).get(moveableToken.xPos()).setMoveable();
 		}
 	}
 	
