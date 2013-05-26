@@ -42,8 +42,8 @@ public class Game {
 	public void setPlayerStones(Map<Color,Integer> playerStones){ this.playerStones = playerStones;}
 	
 	public static void main(String[] args) {
-		GameGui gui = new GameGui(3);
-		Game game = new Game(3);
+		GameGui gui = new GameGui(4);
+		Game game = new Game(4);
 		gui.start(game);
 		List<Token> moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
 		game.getBoard().setMoveable(moveableTokens);
@@ -97,16 +97,27 @@ public class Game {
 	}
 	
 	//TODO to players list
-	public static Game takeStone(Game game, int xPos, int yPos){
+	public static Game takeStone(Game game, int xPos, int yPos, boolean ai){
 		Color currentTokenColor = game.getBoard().token(xPos, yPos).color();
 		List<List<Token>> tokens = game.getBoard().removeStone(xPos,yPos);
+		if(!ai){
+			if(game.getPlayerStones().get(currentTokenColor) != null){
+				game.getPlayerStones().put(
+						currentTokenColor, game.getPlayerStones().get(
+								currentTokenColor
+							) + 1 
+					);
+			}else{
+				game.getPlayerStones().put(currentTokenColor, 1);
+			}
+		}
 		List<Token> moveableTokens = GameLogic.moveableTokens(tokens, game.getSize(), currentTokenColor);
 		game.getBoard().setMoveable(moveableTokens);
 		return game;
 	}
 	
 	public static Game takeStones(Game game, List<Token> move, boolean aiOnTurn){
-		game.getBoard().takeStones(move);
+		
 		if(aiOnTurn){
 			if(game.getAiStones().get(move.get(0).color()) != null){
 				game.getAiStones().put(
@@ -128,6 +139,7 @@ public class Game {
 				game.getPlayerStones().put(move.get(0).color(), move.size());
 			}
 		}
+		game.getBoard().takeStones(move);
 		return game;
 	}
 	

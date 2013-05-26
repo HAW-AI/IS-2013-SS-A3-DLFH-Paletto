@@ -17,6 +17,9 @@ public class GameGui {
 	private TokenButton newGameButton,doneButton,fieldButtons[][];
 	private int rowColumnSize;
 	private JPanel fieldPanel, scorePanel, actionPanel;
+	private JPanel aiScorePanel, playerScorePanel;
+	
+	private JLabel aiScoreLabel, playerScoreLabel;
 	
 	public Game game;
 
@@ -29,9 +32,14 @@ public class GameGui {
 		fieldPanel = new JPanel();
         scorePanel = new JPanel();
         actionPanel = new JPanel();
+        aiScorePanel = new JPanel();
+        playerScorePanel = new JPanel();
 		
         newGameButton = new TokenButton("New Game");
         doneButton = new TokenButton("Move Done");
+        
+        aiScoreLabel = new JLabel();
+        playerScoreLabel = new JLabel();
         
 		for(int i=0; i < rowColumnSize; i++){
 			for(int j=0; j < rowColumnSize; j++){
@@ -76,6 +84,25 @@ public class GameGui {
 			}
 		});
 		actionPanel.add(newGameButton);
+		/*
+		String aiScoreString = "AI:", playerScoreString = "Player:";
+		
+		for(Color c : game.getAiStones().keySet()){
+			aiScoreString.concat(c.getClass()+": "+game.getAiStones().get(c)+"\n");
+			System.out.println("repaint in start");
+		}
+		for(Color c : game.getPlayerStones().keySet()){
+			playerScoreString.concat(c.getClass()+": "+game.getPlayerStones().get(c)+"\n");
+		}
+		aiScoreLabel.setText(aiScoreString);
+		playerScoreLabel.setText(playerScoreString);
+		*/
+		aiScorePanel.add(aiScoreLabel);
+		playerScorePanel.add(playerScoreLabel);
+		
+		scorePanel.setLayout(new BorderLayout());
+		scorePanel.add(aiScorePanel, BorderLayout.SOUTH);
+		scorePanel.add(playerScorePanel, BorderLayout.NORTH);
 		
 		f.setSize(280, 350);
         f.setVisible(true);
@@ -83,6 +110,7 @@ public class GameGui {
 	}
 	
 	public void newGame(){
+		//TODO new Game did not work yet
 		setGame(Game.newGame(3));
 	}
 	
@@ -96,6 +124,19 @@ public class GameGui {
 				fieldButtons[token.yPos()][token.xPos()].setState(token.color(),token.isMoveable());
 			}
 		}
-		f.repaint();
+		
+		//TODO print Colors names
+		String aiScoreString = "<html><p align=left>AI:", playerScoreString = "<html><p align=left>Player:";
+		
+		for(Color c : game.getAiStones().keySet()){
+			aiScoreString+=("<br>"+c+": "+game.getAiStones().get(c));
+		}
+		aiScoreString+="</p></html>";
+		for(Color c : game.getPlayerStones().keySet()){
+			playerScoreString+=("<br>"+c+": "+game.getPlayerStones().get(c));
+		}
+		playerScoreString+="</p></html>";
+		aiScoreLabel.setText(aiScoreString);
+		playerScoreLabel.setText(playerScoreString);
 	}
 }
