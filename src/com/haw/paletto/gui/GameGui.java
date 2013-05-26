@@ -90,13 +90,15 @@ public class GameGui {
 	public void done(){
 		Game.movePlayer(this,this.game);
 	}
-		
+
 	public void repaint(Game game){
 		for(List<Token> row : game.getBoard().tokens()){
 			for(Token token : row){
-				fieldButtons[token.xPos()][token.yPos()].setState(token.color(),token.isMoveable());
+				System.out.println("~~~"+token+" >"+token.color());
+				fieldButtons[token.yPos()][token.xPos()].setState(token.color(),token.isMoveable());
 			}
 		}
+		System.out.println(fieldButtons);
 		f.repaint();
 	}
 }

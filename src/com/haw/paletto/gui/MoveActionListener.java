@@ -18,8 +18,8 @@ public class MoveActionListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String FieldPosition = event.getActionCommand();
-		int xPos = Integer.parseInt(FieldPosition.split("-")[0]);
-		int yPos = Integer.parseInt(FieldPosition.split("-")[1]);
+		int xPos = Integer.parseInt(FieldPosition.split("-")[1]);
+		int yPos = Integer.parseInt(FieldPosition.split("-")[0]);
 		this.gui.setGame(Game.takeStone(game, xPos, yPos));
 	}
 }
