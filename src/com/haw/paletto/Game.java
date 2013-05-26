@@ -13,6 +13,7 @@ public class Game {
 	Board board;
 	Map<Color,Integer> aiStones;
 	Map<Color,Integer> playerStones;
+	boolean ended = false;
 	
 	public Game(int size){
 		this.size = size;
@@ -36,6 +37,10 @@ public class Game {
 	
 	public Map<Color,Integer> getPlayerStones(){ return this.playerStones;}
 	
+	public void setAiStones(Map<Color,Integer> aiStones){ this.aiStones = aiStones;} 
+	
+	public void setPlayerStones(Map<Color,Integer> playerStones){ this.playerStones = playerStones;}
+	
 	public static void main(String[] args) {
 		GameGui gui = new GameGui(3);
 		Game game = new Game(3);
@@ -56,12 +61,17 @@ public class Game {
 		Game result = null;
 		System.out.println("Move Player");
 		if(GameLogic.gameWon(game)){
-			
+			game.ended = true;
+			result = game;
 		}else{
 			List<Token> moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
 			game.getBoard().setMoveable(moveableTokens);
 			result = moveAi(game);
 			System.out.println("Moved AI");
+			if(GameLogic.gameWon(game)){
+				game.ended = true;
+				result = game;
+			}
 			moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
 			game.getBoard().setMoveable(moveableTokens);
 			gui.setGame(game);
@@ -70,7 +80,11 @@ public class Game {
 	}
 	
 	public static Game newGame(int size){
-		return new Game(size);
+		//TODO moved tokens stay away
+		Game result = new Game(size);
+		List<Token> moveableTokens = GameLogic.moveableTokens(result.getBoard().tokens(), size);
+		result.getBoard().setMoveable(moveableTokens);
+		return result;
 	}
 	
 	public static Game clone(Game game){

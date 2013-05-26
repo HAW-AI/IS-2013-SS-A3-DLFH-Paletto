@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.*;
 
+
 public class TokenButton extends JButton {
 
 	/**
@@ -17,6 +18,9 @@ public class TokenButton extends JButton {
 	
 	public TokenButton(String label){
 		super(label);
+		this.setFocusPainted(false);
+		this.setBorderPainted(false);
+
 	}
 	
 	public void setState(Color color, boolean enabled){

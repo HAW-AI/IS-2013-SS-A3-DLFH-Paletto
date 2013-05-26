@@ -84,7 +84,6 @@ public class GameGui {
 	
 	public void newGame(){
 		setGame(Game.newGame(3));
-		repaint(this.game);
 	}
 	
 	public void done(){

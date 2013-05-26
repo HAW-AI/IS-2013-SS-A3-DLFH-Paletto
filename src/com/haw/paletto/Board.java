@@ -67,6 +67,12 @@ public class Board {
 	}
 	
 	public static boolean isEmpty(Board board){
-		return board.tokens.isEmpty();
+		boolean result = true;
+		for(List<Token> row : board.tokens()){
+			for(Token t : row){
+				if(t.isAvailable())result = false;
+			}
+		}
+		return result;
 	}
 }

@@ -1,9 +1,11 @@
 package com.haw.paletto.logic;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.haw.paletto.Game;
 import com.haw.paletto.Token;
@@ -69,6 +71,7 @@ public class AI {
 		}else{
 			for(Color color : game.getPlayerStones().keySet()){
 				result += game.getPlayerStones().get(color);
+				if(game.getPlayerStones().get(color) == game.getSize()) result = Integer.MAX_VALUE;
 			}
 		}
 		return result;
@@ -90,11 +93,20 @@ public class AI {
 			}
 		}
 		for(Color c : takeableColors.keySet()){
-			//TODO teillisten
-			//System.out.println("PossibleMoves: "+takeableColors.get(c));
-			result.add(takeableColors.get(c));
+			List<Token> colorSet = takeableColors.get(c);
+			int numColorStones = colorSet.size();
+			Set<List<Token>> colorMoves = new HashSet<List<Token>>();
+			for(int i = 0; i < numColorStones; i++){
+				List<Token> move = new LinkedList<Token>();
+				for(int j=0; j<numColorStones-1; j++){
+					if((i & (1 << j)) != 0) {
+						move.add(colorSet.get(j));
+					}
+				}
+				colorMoves.add(move);
+			}
+			result.add(colorSet);
 		}
-		//System.out.println("---------------------");
 		return result;
 	}
 }
