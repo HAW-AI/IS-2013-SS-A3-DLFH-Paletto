@@ -30,7 +30,7 @@ public class Token {
 	}
 	
 	public boolean isAvailable(){
-		return this.available==true;
+		return this.available;
 	}
 
 	public boolean isMoveable() {
@@ -58,4 +58,20 @@ public class Token {
 		return new Token(this.color, this.xPos, this.yPos);
 	}
 	
+	public String toString(){
+		return "y"+this.yPos+" x"+this.xPos;
+	}
+	
+	public boolean equals(Object that){
+		boolean result = false;
+		if(that == this) {
+		      result = true;
+	    } else if(that instanceof Token) {
+	      Token token = (Token) that;
+	      if(this.yPos() == token.yPos() && this.xPos() == token.yPos() && this.color().equals(token.color())){
+	    	  result = true;
+	      }
+	    }
+	    return result;
+	}
 }
