@@ -97,12 +97,17 @@ public class GameGui {
 		aiScoreLabel.setText(aiScoreString);
 		playerScoreLabel.setText(playerScoreString);
 		*/
+		aiScorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		aiScorePanel.setPreferredSize( new Dimension(100,100) );
 		aiScorePanel.add(aiScoreLabel);
+		playerScorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		playerScorePanel.setPreferredSize( new Dimension(100,100) );
 		playerScorePanel.add(playerScoreLabel);
-		
-		scorePanel.setLayout(new BorderLayout());
-		scorePanel.add(aiScorePanel, BorderLayout.SOUTH);
-		scorePanel.add(playerScorePanel, BorderLayout.NORTH);
+
+		scorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		scorePanel.setPreferredSize( new Dimension( 100, 50 ) );
+		scorePanel.add(aiScorePanel);
+		scorePanel.add(playerScorePanel);
 		
 		f.setSize(280, 350);
         f.setVisible(true);
