@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import java.util.List;
+import java.util.Map;
 
 import com.haw.paletto.Game;
 import com.haw.paletto.Token;
@@ -38,8 +39,8 @@ public class GameGui {
         newGameButton = new TokenButton("New Game");
         doneButton = new TokenButton("Move Done");
         
-        aiScoreLabel = new JLabel();
-        playerScoreLabel = new JLabel();
+        aiScoreLabel = new JLabel("AI Player");
+        playerScoreLabel = new JLabel("Human Player");
         
 		for(int i=0; i < rowColumnSize; i++){
 			for(int j=0; j < rowColumnSize; j++){
@@ -84,29 +85,16 @@ public class GameGui {
 			}
 		});
 		actionPanel.add(newGameButton);
-		/*
-		String aiScoreString = "AI:", playerScoreString = "Player:";
-		
-		for(Color c : game.getAiStones().keySet()){
-			aiScoreString.concat(c.getClass()+": "+game.getAiStones().get(c)+"\n");
-			System.out.println("repaint in start");
-		}
-		for(Color c : game.getPlayerStones().keySet()){
-			playerScoreString.concat(c.getClass()+": "+game.getPlayerStones().get(c)+"\n");
-		}
-		aiScoreLabel.setText(aiScoreString);
-		playerScoreLabel.setText(playerScoreString);
-		*/
 		aiScorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		aiScorePanel.setPreferredSize( new Dimension(100,100) );
-		aiScorePanel.add(aiScoreLabel);
 		playerScorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		playerScorePanel.setPreferredSize( new Dimension(100,100) );
-		playerScorePanel.add(playerScoreLabel);
 
 		scorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		scorePanel.setPreferredSize( new Dimension( 100, 50 ) );
+		scorePanel.setPreferredSize( new Dimension( 100, 100 ) );
+		scorePanel.add(aiScoreLabel);
 		scorePanel.add(aiScorePanel);
+		scorePanel.add(playerScoreLabel);
 		scorePanel.add(playerScorePanel);
 		
 		f.setSize(280, 350);
@@ -130,18 +118,22 @@ public class GameGui {
 			}
 		}
 		
-		//TODO print Colors names
-		String aiScoreString = "<html><p align=left>AI:", playerScoreString = "<html><p align=left>Player:";
+		aiScorePanel.removeAll();
+		for (Map.Entry<Color, Integer> entry : game.getAiStones().entrySet()) {
+			JLabel newLabel = new JLabel(entry.getValue().toString());
+			newLabel.setBackground(entry.getKey());
+			newLabel.setOpaque(true);
+			aiScorePanel.add(newLabel);
+		}		
 		
-		for(Color c : game.getAiStones().keySet()){
-			aiScoreString+=("<br>"+c+": "+game.getAiStones().get(c));
+		playerScorePanel.removeAll();
+		for (Map.Entry<Color, Integer> entry : game.getPlayerStones().entrySet()) {
+			JLabel newLabel = new JLabel(entry.getValue().toString());
+			newLabel.setBackground(entry.getKey());
+			newLabel.setOpaque(true);
+			playerScorePanel.add(newLabel);
 		}
-		aiScoreString+="</p></html>";
-		for(Color c : game.getPlayerStones().keySet()){
-			playerScoreString+=("<br>"+c+": "+game.getPlayerStones().get(c));
-		}
-		playerScoreString+="</p></html>";
-		aiScoreLabel.setText(aiScoreString);
-		playerScoreLabel.setText(playerScoreString);
+		f.validate();
+		f.repaint();
 	}
 }
