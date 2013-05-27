@@ -98,7 +98,7 @@ public class GameGui {
 		scorePanel.add(playerScoreLabel);
 		scorePanel.add(playerScorePanel);
 		
-		f.setSize(280, 350);
+		f.setSize(500, 450);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
