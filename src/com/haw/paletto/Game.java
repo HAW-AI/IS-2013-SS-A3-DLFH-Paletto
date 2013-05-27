@@ -14,6 +14,7 @@ public class Game {
 	private Map<Color,Integer> aiStones;
 	private Map<Color,Integer> playerStones;
 	private boolean ended = false;
+	private boolean aiWon = false;
 	private final static int defaultfieldSize = 6;
 	
 	public Game(){
@@ -46,6 +47,12 @@ public class Game {
 	
 	public void setPlayerStones(Map<Color,Integer> playerStones){ this.playerStones = playerStones;}
 	
+	public boolean isOver(){return this.ended;}
+	
+	public boolean hasAiWon(){return this.aiWon;}
+	
+	public static boolean playerWon(Game game){return GameLogic.gameWon(game);}
+	
 	public static void main(String[] args) {
 		Game game = new Game();
 		GameGui gui = new GameGui(game.getSize());
@@ -64,17 +71,17 @@ public class Game {
 	
 	public static Game movePlayer(GameGui gui, Game game){
 		Game result = null;
-		System.out.println("Move Player");
 		if(GameLogic.gameWon(game)){
 			game.ended = true;
+			game.aiWon = false;
 			result = game;
 		}else{
 			List<Token> moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
 			game.getBoard().setMoveable(moveableTokens);
 			result = moveAi(game);
-			System.out.println("Moved AI");
 			if(GameLogic.gameWon(game)){
 				game.ended = true;
+				game.aiWon = true;
 				result = game;
 			}
 			moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
@@ -91,15 +98,11 @@ public class Game {
 		playerStones = new HashMap<Color,Integer>();
 		List<Token> moveableTokens = GameLogic.moveableTokens(board.tokens(), size);
 		board.setMoveable(moveableTokens);
+		ended = false;
 	}
 	
 	public static Game clone(Game game){
 		return new Game(game.size, game.board.clone(), new HashMap<Color,Integer>(game.aiStones), new HashMap<Color,Integer>(game.playerStones));
-	}
-	
-	
-	public static boolean playerWon(Game game){
-		return GameLogic.gameWon(game);
 	}
 	
 	//TODO to players list

@@ -121,6 +121,7 @@ public class GameGui {
 	
 	public void done(){
 		Game.movePlayer(this,this.game);
+		repaint(game);
 	}
 
 	public void repaint(Game game){
@@ -143,5 +144,16 @@ public class GameGui {
 		playerScoreString+="</p></html>";
 		aiScoreLabel.setText(aiScoreString);
 		playerScoreLabel.setText(playerScoreString);
+		
+		if(game.isOver()){
+			System.out.println("Game is over");
+			String msg = "";
+			if(game.hasAiWon()){ 
+				msg = "Game over.";
+			}else{ 
+				msg = "You win!";
+			}
+			JOptionPane.showMessageDialog(f,msg,"End of Game",JOptionPane.PLAIN_MESSAGE);
+		}
 	}
 }
