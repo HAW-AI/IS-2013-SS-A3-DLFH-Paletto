@@ -111,7 +111,7 @@ public class GameGui {
 	
 	public void newGame(){
 		//TODO new Game did not work yet
-		setGame(Game.newGame(3));
+		setGame(Game.newGame());
 	}
 	
 	public void done(){

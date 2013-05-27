@@ -9,11 +9,16 @@ import com.haw.paletto.logic.AI;
 import com.haw.paletto.logic.GameLogic;
 public class Game {
 
-	final int size;
+	int size;
 	Board board;
 	Map<Color,Integer> aiStones;
 	Map<Color,Integer> playerStones;
 	boolean ended = false;
+	private final static int defaultfieldSize = 6;
+	
+	public Game(){
+		this(defaultfieldSize);
+	}
 	
 	public Game(int size){
 		this.size = size;
@@ -42,8 +47,8 @@ public class Game {
 	public void setPlayerStones(Map<Color,Integer> playerStones){ this.playerStones = playerStones;}
 	
 	public static void main(String[] args) {
-		GameGui gui = new GameGui(4);
-		Game game = new Game(4);
+		Game game = new Game();
+		GameGui gui = new GameGui(game.getSize());
 		gui.start(game);
 		List<Token> moveableTokens = GameLogic.moveableTokens(game.getBoard().tokens(), game.getSize());
 		game.getBoard().setMoveable(moveableTokens);
@@ -79,10 +84,10 @@ public class Game {
 		return result;
 	}
 	
-	public static Game newGame(int size){
+	public static Game newGame(){
 		//TODO moved tokens stay away
-		Game result = new Game(size);
-		List<Token> moveableTokens = GameLogic.moveableTokens(result.getBoard().tokens(), size);
+		Game result = new Game();
+		List<Token> moveableTokens = GameLogic.moveableTokens(result.getBoard().tokens(), result.getSize());
 		result.getBoard().setMoveable(moveableTokens);
 		return result;
 	}
