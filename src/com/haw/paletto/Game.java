@@ -9,11 +9,11 @@ import com.haw.paletto.logic.AI;
 import com.haw.paletto.logic.GameLogic;
 public class Game {
 
-	int size;
-	Board board;
-	Map<Color,Integer> aiStones;
-	Map<Color,Integer> playerStones;
-	boolean ended = false;
+	private int size;
+	private Board board;
+	private Map<Color,Integer> aiStones;
+	private Map<Color,Integer> playerStones;
+	private boolean ended = false;
 	private final static int defaultfieldSize = 6;
 	
 	public Game(){
