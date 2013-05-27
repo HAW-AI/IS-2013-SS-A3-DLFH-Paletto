@@ -27,30 +27,30 @@ public class AI {
 	public static List<Token> bestMove(Game game, int depth, boolean aiOnTurn){
 		int val = Integer.MIN_VALUE;
 		List<Token> result = null;
-		for(List<Token> move : possibleMoves(game.getBoard())){
-			Game newGame = doMove(Game.clone(game), move, aiOnTurn);
-			int eval = evalNextState(newGame,aiOnTurn,depth-1);
-			if(eval>val){ val=eval; result = move;}
+		for(List<Token> posMove : possibleMoves(game.getBoard())){
+			Game newGame = doMove(Game.clone(game), posMove, aiOnTurn);
+			int eval = evalNextState(newGame,aiOnTurn,depth-1, posMove, game);
+			if(eval>val){ val=eval; result = posMove;}
 		}
 		return result;
 	}
 	
-	public static int evalNextState(Game game, boolean ai, int searchDepth){
-		return minmax(game, ai, searchDepth);
+	public static int evalNextState(Game game, boolean ai, int searchDepth, List<Token> move, Game oldGame){
+		return minmax(game, ai, searchDepth, move, oldGame);
 	}
 	
-	public static int minmax(Game game, boolean ai, int searchDepth){
+	public static int minmax(Game game, boolean ai, int searchDepth, List<Token> move, Game oldGame){
 		if(searchDepth <= 0 || Game.playerWon(game)){
-			return evalMove(game,ai);
+			return evalMove(oldGame,ai,move);
 		}
 		int resultVal;
 		if(ai) resultVal = Integer.MAX_VALUE;
 		else resultVal = Integer.MIN_VALUE;
 		
-		for(List<Token> move : possibleMoves(game.getBoard())){
-			if(Game.moveAllowed(move)){
-				Game newGame = doMove(game, move, ai);
-				int nextVal=minmax(newGame, !ai, searchDepth-1);
+		for(List<Token> posMove : possibleMoves(game.getBoard())){
+			if(Game.moveAllowed(posMove)){
+				Game newGame = doMove(game, posMove, ai);
+				int nextVal=minmax(newGame, !ai, searchDepth-1, posMove, game);
 				if( (!ai && nextVal>=resultVal) || (ai && nextVal<=resultVal)){
 					resultVal = nextVal;
 				}
@@ -60,18 +60,33 @@ public class AI {
 		
 	}
 	
-	public static int evalMove(Game game, boolean ai){
-		//TODO nicht schön so!
+	public static int evalMove(Game game, boolean ai, List<Token> move){
 		int result = 0;
+		Color gainedColor = move.get(0).color();
+		Map<Color,Integer> ownList, opponentList;
 		if(ai){
-			for(Color color : game.getAiStones().keySet()){
-				result += game.getAiStones().get(color);
-				if(game.getAiStones().get(color) == game.getSize()) result = Integer.MAX_VALUE;
-			}
+			ownList = game.getAiStones();
+			opponentList = game.getPlayerStones();
 		}else{
-			for(Color color : game.getPlayerStones().keySet()){
-				result += game.getPlayerStones().get(color);
-				if(game.getPlayerStones().get(color) == game.getSize()) result = Integer.MAX_VALUE;
+			ownList = game.getPlayerStones();
+			opponentList = game.getAiStones();
+		}
+		if(ownList.containsKey(gainedColor)){
+			//gut, wenn eigene farbe erhöht
+			//schlecht, wenn eigene farbe und gegner schon hat
+			if(opponentList.containsKey(gainedColor)){
+				result = 0;
+			}else{
+				result = move.size() + ownList.get(gainedColor);
+				if(result == game.getSize()) result = Integer.MAX_VALUE;
+			}
+			
+		}else{ //gut, wenn gegner farbe sammelt und selbst noch nicht
+			if(opponentList.containsKey(gainedColor)){
+				result = opponentList.get(gainedColor); //TODO
+				if((opponentList.get(gainedColor)+move.size()) == game.getSize()) result = Integer.MAX_VALUE;
+			}else{
+				result = move.size();
 			}
 		}
 		return result;

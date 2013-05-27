@@ -135,6 +135,10 @@ public class GameGui {
 			newLabel.setOpaque(true);
 			playerScorePanel.add(newLabel);
 		}
+		
+		f.validate();
+		f.repaint();
+		
 		if(game.isOver()){
 			String msg = "";
 			if(game.hasAiWon()){ 
@@ -144,7 +148,6 @@ public class GameGui {
 			}
 			JOptionPane.showMessageDialog(f,msg,"End of Game",JOptionPane.PLAIN_MESSAGE);
 		}
-		f.validate();
-		f.repaint();
+		
 	}
 }
