@@ -115,8 +115,8 @@ public class GameGui {
 	}
 	
 	public void newGame(){
-		//TODO new Game did not work yet
-		setGame(Game.newGame());
+		game.newGame();
+		repaint(game);
 	}
 	
 	public void done(){

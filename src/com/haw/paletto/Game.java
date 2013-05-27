@@ -84,12 +84,13 @@ public class Game {
 		return result;
 	}
 	
-	public static Game newGame(){
+	public void newGame(){
 		//TODO moved tokens stay away
-		Game result = new Game();
-		List<Token> moveableTokens = GameLogic.moveableTokens(result.getBoard().tokens(), result.getSize());
-		result.getBoard().setMoveable(moveableTokens);
-		return result;
+		board = new Board(GameLogic.buildBoard(size));
+		aiStones = new HashMap<Color,Integer>();
+		playerStones = new HashMap<Color,Integer>();
+		List<Token> moveableTokens = GameLogic.moveableTokens(board.tokens(), size);
+		board.setMoveable(moveableTokens);
 	}
 	
 	public static Game clone(Game game){
