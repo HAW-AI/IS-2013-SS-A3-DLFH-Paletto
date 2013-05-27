@@ -3,7 +3,6 @@ package com.haw.paletto.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
