@@ -17,7 +17,7 @@ public class TokenButton extends JButton {
 	}
 	
 	public TokenButton(String label){
-		super(label);
+		super("");
 		this.setFocusPainted(false);
 		this.setBorderPainted(false);
 

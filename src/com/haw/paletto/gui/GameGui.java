@@ -15,7 +15,8 @@ import com.haw.paletto.Token;
 public class GameGui {
 	private JFrame f;
 	private String GameName = "Paletto";
-	private TokenButton newGameButton,doneButton,fieldButtons[][];
+	private TokenButton fieldButtons[][];
+	private Button newGameButton,doneButton;
 	private int rowColumnSize;
 	private JPanel fieldPanel, scorePanel, actionPanel;
 	private JPanel aiScorePanel, playerScorePanel;
@@ -36,8 +37,8 @@ public class GameGui {
         aiScorePanel = new JPanel();
         playerScorePanel = new JPanel();
 		
-        newGameButton = new TokenButton("New Game");
-        doneButton = new TokenButton("Move Done");
+        newGameButton = new Button("New Game");
+        doneButton = new Button("Move Done");
         
         aiScoreLabel = new JLabel("AI Player");
         playerScoreLabel = new JLabel("Human Player");
@@ -135,7 +136,6 @@ public class GameGui {
 			playerScorePanel.add(newLabel);
 		}
 		if(game.isOver()){
-			System.out.println("Game is over");
 			String msg = "";
 			if(game.hasAiWon()){ 
 				msg = "Game over.";
