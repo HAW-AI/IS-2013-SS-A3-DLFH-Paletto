@@ -1,6 +1,6 @@
 package com.haw.paletto;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
@@ -55,11 +55,11 @@ public class Board {
 	}
 	
 	public Board clone(){
-		List<List<Token>> result = new LinkedList<List<Token>>();
+		List<List<Token>> result = new ArrayList<List<Token>>();
 		for(List<Token> row : tokens){
-			List<Token> resultRow = new LinkedList<Token>();
-			for(Token t : row){
-				resultRow.add(t.clone());
+			List<Token> resultRow = new ArrayList<Token>();
+			for(Token token : row){
+				resultRow.add(token.clone());
 			}
 			result.add(resultRow);
 		}
@@ -74,5 +74,22 @@ public class Board {
 			}
 		}
 		return result;
+	}
+	
+	public boolean equals(Object that){
+		boolean result = false;
+		if(that == this) {
+		      result = true;
+	    } else if(that instanceof Board) {
+	      Board board = (Board) that;
+			for(List<Token> row : board.tokens()){
+				for(Token token : row){
+					if(!result && this.tokens().get(token.yPos()).get(token.xPos()).equals(token)){
+						result = true;
+					}
+				}
+			}
+	    }
+	    return result;
 	}
 }

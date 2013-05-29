@@ -84,7 +84,7 @@ public class GameLogic {
 				Token currentElem = tokens.get(i).get(j);
 				if(color == null || color.equals(currentElem.color())){
 					if((i==0 && j==0) || (i==0 && j==(size-1)) || (i==(size-1) && j==0) || (i==(size-1) && j==(size-1))){ //corners
-						result.add(currentElem);
+						if(tokens.get(i).get(j).isAvailable()) result.add(currentElem);
 					} else if(i == 0){ //rest of first row
 						moveableList.add(false);
 						moveableList.add(tokens.get(i).get(j-1).isAvailable());
