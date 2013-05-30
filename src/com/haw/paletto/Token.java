@@ -66,6 +66,7 @@ public class Token {
 		return new Token(this.color, this.xPos, this.yPos, this.available, this.moveable);
 	}
 	
+	@Override
 	public String toString(){
 		return "y"+this.yPos+" x"+this.xPos;
 	}
