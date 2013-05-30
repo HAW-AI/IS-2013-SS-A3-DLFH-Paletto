@@ -32,7 +32,7 @@ public class AI {
 			List<List<Token>> moveList = new ArrayList<List<Token>>();
 			int eval = evalNextState(newGame, game, aiMove, depth-1, aMove, moveList);
 			System.out.println("BestMove "+aMove+" = "+eval);
-			if(eval > val){ //this is a max move
+			if(eval >= val){ //this is a max move
 				val=eval;
 				result = aMove;
 			}
