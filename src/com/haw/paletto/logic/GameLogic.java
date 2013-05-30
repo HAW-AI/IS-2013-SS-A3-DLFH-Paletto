@@ -6,7 +6,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import com.haw.paletto.Board;
 import com.haw.paletto.Game;
@@ -82,7 +84,7 @@ public class GameLogic {
 			for(int j=0; j < size;j++){
 				List<Boolean> moveableList = new ArrayList<Boolean>();
 				Token currentElem = tokens.get(i).get(j);
-				if(color == null || color.equals(currentElem.color())){
+				if(moveAllowed(tokens, size, Arrays.asList(currentElem)) && (color == null || color.equals(currentElem.color()))){
 					if((i==0 && j==0) || (i==0 && j==(size-1)) || (i==(size-1) && j==0) || (i==(size-1) && j==(size-1))){ //corners
 						if(tokens.get(i).get(j).isAvailable()) result.add(currentElem);
 					} else if(i == 0){ //rest of first row
@@ -134,9 +136,73 @@ public class GameLogic {
 		return result;
 	}
 	
-	public static boolean moveAllowed(List<Token> move){
-		//TODO
-		return true;
+	public static boolean moveAllowed(List<List<Token>> tokens, int size, List<Token> move){
+		Queue<Token> notInspected = new LinkedList<Token>();
+		List<Token> inspected = new LinkedList<Token>();
+		int availableTokens = 0;
+		for(int i=0; i < size;i++){
+			for(int j=0; j < size;j++){
+				Token token = tokens.get(i).get(j);
+//				System.out.println("current: "+token+" move:"+move.get(0)+" equals:"+move.get(0).equals(token));
+//				System.out.println(" available:"+token.isAvailable());
+//				System.out.println(" notMove:"+!move.contains(token));
+				if(token.isAvailable() && !move.contains(token)){
+					//System.out.println("~~~"+token);
+					availableTokens++;
+					if(notInspected.isEmpty()) notInspected.add(token);
+				}
+			}
+		}
+		//
+		while(!notInspected.isEmpty()){
+			Token currentToken = notInspected.poll();
+//			System.out.print("current "+currentToken);
+//			System.out.print(" notInspected:"+!inspected.contains(currentToken));
+//			System.out.print(" notMove:"+!inspected.contains(currentToken));
+			if(!move.contains(currentToken) && !inspected.contains(currentToken)){
+				//System.out.print(" added");
+				inspected.add(currentToken);
+				int xPos = currentToken.xPos();
+				int yPos = currentToken.yPos();
+				if(yPos==0 && xPos==0){ //top left corner
+					if(tokens.get(yPos).get(xPos+1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos+1));
+					if(tokens.get(yPos+1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos+1).get(xPos));	
+				} else if(yPos==0 && xPos==(size-1)){ //top right corner
+					if(tokens.get(yPos).get(xPos-1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos-1));
+					if(tokens.get(yPos+1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos+1).get(xPos));	
+				} else if(yPos==(size-1) && xPos==0){ //bottom left corner
+					if(tokens.get(yPos).get(xPos+1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos+1));
+					if(tokens.get(yPos-1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos-1).get(xPos));
+				} else if(yPos==(size-1) && xPos==(size-1)){ //bottom right corner
+					if(tokens.get(yPos).get(xPos-1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos-1));
+					if(tokens.get(yPos-1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos-1).get(xPos));	
+				} else if(yPos == 0){ //rest of first row
+					if(tokens.get(yPos).get(xPos-1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos-1));
+					if(tokens.get(yPos).get(xPos+1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos+1));
+					if(tokens.get(yPos+1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos+1).get(xPos));	
+				} else if(yPos == (size-1)){ //rest of last row
+					if(tokens.get(yPos).get(xPos-1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos-1));
+					if(tokens.get(yPos).get(xPos+1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos+1));
+					if(tokens.get(yPos-1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos-1).get(xPos));
+				} else if(xPos == 0){ //first values of middle rows 	
+					if(tokens.get(yPos).get(xPos+1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos+1));
+					if(tokens.get(yPos+1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos+1).get(xPos));	
+					if(tokens.get(yPos-1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos-1).get(xPos));
+				} else if(xPos == (size-1)){ //last values of middle rows 	
+					if(tokens.get(yPos).get(xPos-1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos-1));
+					if(tokens.get(yPos+1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos+1).get(xPos));	
+					if(tokens.get(yPos-1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos-1).get(xPos));
+				} else { //rest of all rows between first and last
+					if(tokens.get(yPos).get(xPos-1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos-1));
+					if(tokens.get(yPos).get(xPos+1).isAvailable()) notInspected.add(tokens.get(yPos).get(xPos+1));
+					if(tokens.get(yPos+1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos+1).get(xPos));	
+					if(tokens.get(yPos-1).get(xPos).isAvailable()) notInspected.add(tokens.get(yPos-1).get(xPos));
+				}
+			}
+			//System.out.println();
+		}
+//		System.out.println(inspected);
+//		System.out.println("move "+move+" = "+availableTokens +"=="+ inspected.size()+" "+(availableTokens == inspected.size()));
+		return (availableTokens == inspected.size());
 	}
-
 }

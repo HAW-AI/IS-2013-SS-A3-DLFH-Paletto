@@ -28,13 +28,17 @@ public class AI {
 		int val = Integer.MIN_VALUE;
 		List<Token> result = new ArrayList<Token>();
 		for(List<Token> aMove : possibleMoves(game.getBoard())){
-			Game newGame = doMove(Game.clone(game), aMove, aiMove);
-			List<List<Token>> moveList = new ArrayList<List<Token>>();
-			int eval = evalNextState(newGame, game, aiMove, depth-1, aMove, moveList);
-			System.out.println("BestMove "+aMove+" = "+eval);
-			if(eval >= val){ //this is a max move
-				val=eval;
-				result = aMove;
+			if(Game.moveAllowed(game.getBoard().tokens(), game.getSize(),aMove)){
+				Game newGame = doMove(Game.clone(game), aMove, aiMove);
+				List<List<Token>> moveList = new ArrayList<List<Token>>();
+				int eval = evalNextState(newGame, game, aiMove, depth-1, aMove, moveList);
+				System.out.println("BestMove "+aMove+" = "+eval);
+				if(eval >= val){ //this is a max move
+					val=eval;
+					result = aMove;
+				}
+			} else {
+				System.out.println("!!!!!!!!!!Move not allowed");
 			}
 		}
 		System.out.println("---------------Max Move "+result+" = "+val);
@@ -67,16 +71,20 @@ public class AI {
 		int resultVal= isMax?Integer.MIN_VALUE:Integer.MAX_VALUE; //AI = min start result, player = max start result
 
 		for(List<Token> aMove : possibleMoves(game.getBoard())){
-			Game newGame = doMove(Game.clone(game), aMove, aiMove);
-			int nextVal=minmax(newGame, game, aiMove, searchDepth-1, aMove, newMoveList);
-			//max with higher value or min with lower value = set this value
-			if(isMax && (nextVal>=resultVal)){
-				//System.out.println("MAX");
-				resultVal=nextVal;
-			}
-			if(!isMax && (nextVal<=resultVal)){
-				//System.out.println("MIN");
-				resultVal=nextVal;
+			if(Game.moveAllowed(game.getBoard().tokens(), game.getSize(),aMove)){
+				Game newGame = doMove(Game.clone(game), aMove, aiMove);
+				int nextVal=minmax(newGame, game, aiMove, searchDepth-1, aMove, newMoveList);
+				//max with higher value or min with lower value = set this value
+				if(isMax && (nextVal>=resultVal)){
+					//System.out.println("MAX");
+					resultVal=nextVal;
+				}
+				if(!isMax && (nextVal<=resultVal)){
+					//System.out.println("MIN");
+					resultVal=nextVal;
+				}
+			} else {
+				System.out.println("!!!!!!!!!!Move not allowed");
 			}
 		}
 		if(isMax){
