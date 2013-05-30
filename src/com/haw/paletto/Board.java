@@ -75,21 +75,29 @@ public class Board {
 		}
 		return result;
 	}
-	
-	public boolean equals(Object that){
-		boolean result = false;
-		if(that == this) {
-		      result = true;
-	    } else if(that instanceof Board) {
-	      Board board = (Board) that;
-			for(List<Token> row : board.tokens()){
-				for(Token token : row){
-					if(!result && this.tokens().get(token.yPos()).get(token.xPos()).equals(token)){
-						result = true;
-					}
-				}
-			}
-	    }
-	    return result;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((tokens == null) ? 0 : tokens.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Board other = (Board) obj;
+		if (tokens == null) {
+			if (other.tokens != null)
+				return false;
+		} else if (!tokens.equals(other.tokens))
+			return false;
+		return true;
 	}
 }
