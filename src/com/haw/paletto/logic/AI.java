@@ -38,7 +38,7 @@ public class AI {
 					result = aMove;
 				}
 			} else {
-				System.out.println("!!!!!!!!!!Move not allowed");
+				System.out.println(aMove+" not allowed");
 			}
 		}
 		System.out.println("---------------Max Move "+result+" = "+val);
@@ -84,7 +84,7 @@ public class AI {
 					resultVal=nextVal;
 				}
 			} else {
-				System.out.println("!!!!!!!!!!Move not allowed");
+				System.out.println(aMove+" not allowed");
 			}
 		}
 		if(isMax){
