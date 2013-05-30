@@ -84,7 +84,7 @@ public class GameLogic {
 			for(int j=0; j < size;j++){
 				List<Boolean> moveableList = new ArrayList<Boolean>();
 				Token currentElem = tokens.get(i).get(j);
-				if(moveAllowed(tokens, size, Arrays.asList(currentElem)) && (color == null || color.equals(currentElem.color()))){
+				if(currentElem.isAvailable() && moveAllowed(tokens, size, Arrays.asList(currentElem)) && (color == null || color.equals(currentElem.color()))){
 					if((i==0 && j==0) || (i==0 && j==(size-1)) || (i==(size-1) && j==0) || (i==(size-1) && j==(size-1))){ //corners
 						if(tokens.get(i).get(j).isAvailable()) result.add(currentElem);
 					} else if(i == 0){ //rest of first row
