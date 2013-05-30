@@ -17,6 +17,14 @@ public class Token {
 		this.yPos = yPos;
 	}
 	
+	public Token(Color color, int xPos, int yPos, boolean available, boolean moveable){
+		this.color = color;
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.available = available;
+		this.moveable = moveable;
+	}
+	
 	public Color color(){
 		return this.color;
 	}
@@ -55,7 +63,7 @@ public class Token {
 	}
 	
 	public Token clone(){
-		return new Token(this.color, this.xPos, this.yPos);
+		return new Token(this.color, this.xPos, this.yPos, this.available, this.moveable);
 	}
 	
 	public String toString(){
