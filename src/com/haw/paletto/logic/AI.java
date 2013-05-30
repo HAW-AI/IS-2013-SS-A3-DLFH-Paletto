@@ -14,7 +14,7 @@ import java.awt.*;
 
 public class AI {
 	
-	static int searchDepth = 2;
+	static int searchDepth = 3;
 	
 	public static Game doBestMove(Game game){
 		return doMove(game, bestMove(game, searchDepth, true),true);
@@ -48,12 +48,6 @@ public class AI {
 	public static int evalNextState(Game game, Game lastGame, boolean aiMove, int searchDepth,List<Token> lastMove, List<List<Token>> moveList){
 		return minmax(game, lastGame, aiMove, searchDepth, lastMove, moveList);
 	}
-	
-	/*
-	 * Problemidee: scheinabr wird im bereich von eval was nicht richtig übergeben. auf jedenfall werden
-	 *  moves übersehen die im neue game da sind aber im alten nicht
-	 * 
-	 * */
 	
 	public static int minmax(Game game, Game lastGame,  boolean aiMove, int searchDepth, List<Token> lastMove, List<List<Token>> moveList){
 		List<List<Token>> newMoveList = new ArrayList<List<Token>>();
@@ -123,10 +117,15 @@ public class AI {
 			humanWinPosibility += humanStones.get(moveColor);
 		}		
 
-//		if( humanStones.containsKey(moveColor))
-//		System.out.println(">>>>> ->"+tokenQuantity+" + "+humanStones.get(moveColor)+" = "+((tokenQuantity + humanStones.get(moveColor))==game.getSize()));
-
-		//3. der sieg ist unbezahlbar
+		//3. wenn beide alle farben haben ist der letzte stein unbezahlbar
+		if(aiMove && humanStones.keySet().size() == game.getSize() && aiStones.keySet().size() == game.getSize() && Game.takeableStones(game.getBoard()).size() == 1){
+			deadlyMove = Integer.MAX_VALUE;
+		}
+		if(!aiMove && humanStones.keySet().size() == game.getSize() && aiStones.keySet().size() == game.getSize() && Game.takeableStones(game.getBoard()).size() == 1){
+			deadlyMove = Integer.MIN_VALUE;
+		}
+		
+		//4. der sieg ist unbezahlbar
 		if(( aiStones.containsKey(moveColor) && ( (tokenQuantity + aiStones.get(moveColor))==game.getSize()) )){
 			deadlyMove = Integer.MAX_VALUE;
 		}
