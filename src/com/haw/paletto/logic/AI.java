@@ -14,7 +14,7 @@ import java.awt.*;
 
 public class AI {
 	
-	static int searchDepth = 3;
+	static int searchDepth = 4;
 	
 	public static Game doBestMove(Game game){
 		return doMove(game, bestMove(game, searchDepth, true),true);

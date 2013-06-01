@@ -15,7 +15,7 @@ public class Game {
 	private Map<Color,Integer> playerStones;
 	private boolean ended = false;
 	private boolean aiWon = false;
-	private final static int defaultfieldSize = 3;
+	private final static int defaultfieldSize = 6;
 	
 	public Game(){
 		this(defaultfieldSize);
