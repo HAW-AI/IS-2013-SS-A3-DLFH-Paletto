@@ -156,7 +156,7 @@ public class Game {
 		return GameLogic.moveableTokens(board.tokens(),board.getSize());
 	}
 	
-	public static boolean moveAllowed(List<Token> move){
-		return GameLogic.moveAllowed(move);
+	public static boolean moveAllowed(List<List<Token>> tokens, int size, List<Token> move){
+		return GameLogic.moveAllowed(tokens, size, move);
 	}
 }

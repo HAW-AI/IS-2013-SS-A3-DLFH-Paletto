@@ -17,6 +17,14 @@ public class Token {
 		this.yPos = yPos;
 	}
 	
+	public Token(Color color, int xPos, int yPos, boolean available, boolean moveable){
+		this.color = color;
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.available = available;
+		this.moveable = moveable;
+	}
+	
 	public Color color(){
 		return this.color;
 	}
@@ -55,23 +63,50 @@ public class Token {
 	}
 	
 	public Token clone(){
-		return new Token(this.color, this.xPos, this.yPos);
+		return new Token(this.color, this.xPos, this.yPos, this.available, this.moveable);
 	}
 	
+	@Override
 	public String toString(){
 		return "y"+this.yPos+" x"+this.xPos;
 	}
-	
-	public boolean equals(Object that){
-		boolean result = false;
-		if(that == this) {
-		      result = true;
-	    } else if(that instanceof Token) {
-	      Token token = (Token) that;
-	      if(this.yPos() == token.yPos() && this.xPos() == token.yPos() && this.color().equals(token.color())){
-	    	  result = true;
-	      }
-	    }
-	    return result;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (available ? 1231 : 1237);
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + (moveable ? 1231 : 1237);
+		result = prime * result + xPos;
+		result = prime * result + yPos;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Token other = (Token) obj;
+		if (available != other.available)
+			return false;
+		if (color == null) {
+			if (other.color != null)
+				return false;
+		} else if (!color.equals(other.color))
+			return false;
+		if (moveable != other.moveable)
+			return false;
+		if (xPos != other.xPos)
+			return false;
+		if (yPos != other.yPos)
+			return false;
+		return true;
 	}
 }
+	
+	
