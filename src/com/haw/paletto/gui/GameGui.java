@@ -64,7 +64,6 @@ public class GameGui {
 		f.add(actionPanel, BorderLayout.SOUTH);
 		
 		ActionListener moveListener = new MoveActionListener(this, game);
-		System.out.println(rowColumnSize);
 		fieldPanel.setLayout(new FlowLayout());
 		fieldPanel.setSize(new Dimension(rowColumnSize*80,rowColumnSize*80));
 		for(int i=0; i < rowColumnSize; i++){
