@@ -105,6 +105,7 @@ public class GameGui {
 	
 	public void newGame(){
 		game.newGame();
+		doneButton.setEnabled(true);
 		repaint(game);
 	}
 	
@@ -135,6 +136,7 @@ public class GameGui {
 			}else{ 
 				msg = "You win!";
 			}
+			doneButton.setEnabled(false);
 			JOptionPane.showMessageDialog(f,msg,"End of Game",JOptionPane.PLAIN_MESSAGE);
 		}
 		
