@@ -19,11 +19,10 @@ public class GameGui {
 	private Button newGameButton,doneButton;
 	private int rowColumnSize;
 	private JPanel fieldPanel, scorePanel, actionPanel;
-	private JPanel aiScorePanel, playerScorePanel;
 	
-	private JLabel aiScoreLabel, playerScoreLabel;
+	private JLabel aiScoreNameLabel, playerScoreNameLabel, aiScoreLabel, playerScoreLabel;
 	
-	public Game game;
+	private Game game;
 
 	public GameGui(int rowColumnSize) {
 		this.rowColumnSize = rowColumnSize;
@@ -34,14 +33,15 @@ public class GameGui {
 		fieldPanel = new JPanel();
         scorePanel = new JPanel();
         actionPanel = new JPanel();
-        aiScorePanel = new JPanel();
-        playerScorePanel = new JPanel();
 		
         newGameButton = new Button("New Game");
         doneButton = new Button("Move Done");
         
-        aiScoreLabel = new JLabel("AI Player");
-        playerScoreLabel = new JLabel("Human Player");
+        aiScoreNameLabel = new JLabel("AI Player");
+        playerScoreNameLabel = new JLabel("Human Player");
+        
+		aiScoreLabel = new JLabel();
+		playerScoreLabel = new JLabel();
         
 		for(int i=0; i < rowColumnSize; i++){
 			for(int j=0; j < rowColumnSize; j++){
@@ -86,17 +86,17 @@ public class GameGui {
 			}
 		});
 		actionPanel.add(newGameButton);
-		aiScorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		aiScorePanel.setPreferredSize( new Dimension(100,100) );
-		playerScorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		playerScorePanel.setPreferredSize( new Dimension(100,100) );
 
 		scorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		scorePanel.setPreferredSize( new Dimension( 100, 100 ) );
+		scorePanel.setPreferredSize( new Dimension( 100, 500 ) );
+		aiScoreLabel.setPreferredSize(new Dimension( 100, 150 ) );
+		aiScoreLabel.setVerticalAlignment(SwingConstants.TOP);
+		playerScoreLabel.setPreferredSize(new Dimension( 100, 150 ) );
+		playerScoreLabel.setVerticalAlignment(SwingConstants.TOP);
+		scorePanel.add(aiScoreNameLabel);
 		scorePanel.add(aiScoreLabel);
-		scorePanel.add(aiScorePanel);
+		scorePanel.add(playerScoreNameLabel);
 		scorePanel.add(playerScoreLabel);
-		scorePanel.add(playerScorePanel);
 		
 		f.setSize(500, 450);
         f.setVisible(true);
@@ -120,22 +120,11 @@ public class GameGui {
 			}
 		}
 		
-		aiScorePanel.removeAll();
-		for (Map.Entry<Color, Integer> entry : game.getAiStones().entrySet()) {
-			JLabel newLabel = new JLabel(entry.getValue().toString());
-			newLabel.setBackground(entry.getKey());
-			newLabel.setOpaque(true);
-			aiScorePanel.add(newLabel);
-		}		
+		String startText = "<html><ul style='list-style-type:disc; margin:0 0 0 15; padding:0;'>";
+		String endText = "</ul></html>";
 		
-		playerScorePanel.removeAll();
-		for (Map.Entry<Color, Integer> entry : game.getPlayerStones().entrySet()) {
-			JLabel newLabel = new JLabel(entry.getValue().toString());
-			newLabel.setBackground(entry.getKey());
-			newLabel.setOpaque(true);
-			playerScorePanel.add(newLabel);
-		}
-		
+		aiScoreLabel.setText(startText+buildScoreList(game.getAiStones())+endText);
+        playerScoreLabel.setText(startText+buildScoreList(game.getPlayerStones())+endText);
 		f.validate();
 		f.repaint();
 		
@@ -149,5 +138,21 @@ public class GameGui {
 			JOptionPane.showMessageDialog(f,msg,"End of Game",JOptionPane.PLAIN_MESSAGE);
 		}
 		
+	}
+	
+	private String buildScoreList(Map<Color, Integer> score){
+		String result = "";
+		for (Map.Entry<Color, Integer> entry : score.entrySet()) {
+			result += "<li color="+colorToHtmlHex(entry.getKey())+"><font color=#000000>"+entry.getValue()+"</font></li>";
+		}
+		return result;
+	}
+	
+	private String colorToHtmlHex(Color color){
+		String s = Integer.toHexString(color.getRGB() & 0xffffff);
+		if(s.length() < 6){ //pad left with zeros
+			s = "000000".substring(0,6-s.length()) + s;
+		}
+		return '#'+s;
 	}
 }
