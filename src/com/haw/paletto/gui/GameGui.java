@@ -64,11 +64,14 @@ public class GameGui {
 		f.add(actionPanel, BorderLayout.SOUTH);
 		
 		ActionListener moveListener = new MoveActionListener(this, game);
-		fieldPanel.setLayout(new GridLayout(rowColumnSize,rowColumnSize));
+		System.out.println(rowColumnSize);
+		fieldPanel.setLayout(new FlowLayout());
+		fieldPanel.setSize(new Dimension(rowColumnSize*80,rowColumnSize*80));
 		for(int i=0; i < rowColumnSize; i++){
 			for(int j=0; j < rowColumnSize; j++){
 				fieldButtons[i][j].addActionListener(moveListener);
-				fieldButtons[i][j].setActionCommand(i+"-"+j);				
+				fieldButtons[i][j].setActionCommand(i+"-"+j);			
+				fieldButtons[i][j].setPreferredSize(new Dimension(80, 80));			
 				fieldPanel.add(fieldButtons[i][j]);
 			}
 		}
@@ -88,7 +91,7 @@ public class GameGui {
 		actionPanel.add(newGameButton);
 
 		scorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		scorePanel.setPreferredSize( new Dimension( 100, 500 ) );
+		scorePanel.setPreferredSize( new Dimension( 100, 100 ) );
 		aiScoreLabel.setPreferredSize(new Dimension( 100, 150 ) );
 		aiScoreLabel.setVerticalAlignment(SwingConstants.TOP);
 		playerScoreLabel.setPreferredSize(new Dimension( 100, 150 ) );
@@ -98,8 +101,9 @@ public class GameGui {
 		scorePanel.add(playerScoreNameLabel);
 		scorePanel.add(playerScoreLabel);
 		
-		f.setSize(500, 450);
+		f.setSize(rowColumnSize*80+100+50, rowColumnSize*80+100);
         f.setVisible(true);
+        f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
